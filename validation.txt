@@ -1,0 +1,3 @@
+PASS ramp, RUN, limits, latched OC
+PASS startup timeout, UV, OV, STOP/restart, invalid sensor, input OV
+PASS ADC, filter, PWM quantization, one-sample delay, raw OC, STOP, ideal comparison, NaN

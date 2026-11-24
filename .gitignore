@@ -1,0 +1,8 @@
+*.dll
+*.qraw
+*.log
+*.obj
+*.exe
+*.o
+test_core
+test_digital

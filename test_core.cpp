@@ -1,0 +1,6 @@
+#include "boost_core.h"
+#include <cassert>
+#include <cstdio>
+void start(Boost &b){for(int i=0;i<300;i++)b.step(48,48,1,96,1,20e-6);assert(b.state==Boost::SOFT_START);}
+int main(){Boost b;start(b);for(int i=0;i<1100;i++){b.step(48,70,4,96,1,20e-6);assert(b.duty>=0&&b.duty<=.75&&b.iref>=0&&b.iref<=10);}assert(b.state==Boost::SOFT_START);b.step(48,96,4,96,1,20e-6);assert(b.state==Boost::RUN);b.step(48,96,4,80,1,20e-6);assert(b.state==Boost::RUN);b.step(48,96,16,96,1,20e-6);assert(b.fault==Boost::OVERCURRENT&&b.duty==0);b.step(48,96,0,96,0,20e-6);assert(b.state==Boost::FAULT);puts("PASS ramp, RUN, limits, latched OC");
+Boost c;for(int i=0;i<1800;i++)c.step(48,10,5,96,1,20e-6);assert(c.fault==Boost::START_TIMEOUT);Boost d;start(d);d.step(30,80,2,96,1,20e-6);assert(d.fault==Boost::INPUT_UV);Boost e;e.step(48,116,0,96,1,20e-6);assert(e.fault==Boost::OUTPUT_OV);Boost f;start(f);f.step(48,48,1,96,0,20e-6);assert(f.state==Boost::STOP&&f.duty==0);start(f);Boost g;g.step(NAN,48,0,96,1,20e-6);assert(g.fault==Boost::INVALID_SENSOR);Boost inf;inf.step(INFINITY,48,0,96,1,20e-6);assert(inf.fault==Boost::INVALID_SENSOR);Boost neginf;neginf.step(-INFINITY,48,0,96,1,20e-6);assert(neginf.fault==Boost::INVALID_SENSOR);Boost h;h.step(61,48,0,96,1,20e-6);assert(h.fault==Boost::INPUT_OV);puts("PASS startup timeout, UV, OV, STOP/restart, invalid sensor, input OV");}
