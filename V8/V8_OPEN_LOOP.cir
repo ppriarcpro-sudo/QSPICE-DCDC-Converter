@@ -1,0 +1,8 @@
+* V8 open loop; no DLL required
+.include plant_v8.inc
+.include test_normal.inc
+Vduty1 duty1 0 PWL(0 0 5m 0 25m .5 100m .5)
+Vduty2 duty2 0 PWL(0 0 5m 0 25m .5 100m .5)
+.tran 0 100m 0 10n UIC
+.plot V(out) V(il1) V(il2) V(itotal)
+.end
