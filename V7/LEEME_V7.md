@@ -1,0 +1,10 @@
+# V7: prototipo electrotérmico
+Abrir Boost_V7_01_NORMAL.qsch en esta carpeta, recompilar boost_ctrl.cpp (no reutilizar DLL V6) y ejecutar. Los esquemáticos reutilizan exactamente los símbolos V6; su título interno todavía dice V6. Los includes locales implementan V7. Si falla el símbolo MOS usar Boost_V7_NORMAL_DIRECTIVE.qsch.
+ 
+Modelo Cauer ilustrativo: Rjc 0.8 K/W, Rcs 0.4 K/W, Rha 4 K/W; Cj 0.02 J/K, Cc 0.2 J/K, Ch 8 J/K. Temperatura ambiente 25 C. V(tj), V(tc), V(th) son temperaturas absolutas en grados C. El calor se aproxima mediante potencia firmada en terminales del MOS, incluyendo energía eléctrica almacenada; no es una medida instantánea de calor irreversible. La red térmica promedia los ciclos. Resistencia serie adicional aproximada 0.08 mOhm/K sobre 25 C; no modifica Vth, capacidades ni diodo interno con temperatura. No es un modelo de fabricante.
+
+Derating lineal entre 110 y 140 C: límite de consigna de corriente 10 A a 0 A; no es limitación instantánea de corriente. A 140 C fallo enclavado 7, PWM cero en la siguiente muestra. El diodo puede seguir conduciendo con PWM apagado. Se reutiliza el puerto Enable: 0 parada, 1..2 factor codificado, -1 fallo térmico. No usar esta codificación con DLL V6. V(enable_request) es la orden original. V(thermal_factor) permite observar la reducción. Ganancias y planta base V6 conservadas. 
+
+Ensayos: normal, stop, input step, reference, UV. Para estrés térmico rápido, cambiar Vambient en una copia del test normal a 125 C (derating) o 145 C (trip); no demuestra calentamiento físico. Para evolución térmica larga usar THERMAL_RC_TEST.cir, sin DLL ni conmutación. Con 5 W constantes se espera al equilibrio Tj=51 C, Tc=47 C, Th=45 C. El ensayo eléctrico de 100 ms no alcanza equilibrio térmico. 
+
+Pruebas disponibles: g++ -std=c++11 test_thermal.cpp -o test_thermal && ./test_thermal. Compilación Windows y simulación QSPICE pendientes. No usar para hardware real. Adaptador temporal conserva limitaciones V5/V6 ante retrocesos del solver. Corrección V6: corriente diodo por KCL y corriente puerta por Ohm; no se ha validado en QSPICE.

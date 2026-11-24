@@ -1,0 +1,8 @@
+* Isolated thermal network test (constant 5 W, 25 C ambient)
+Vambient tamb 0 25
+Vpower p_mos 0 5
+Vrequest enable_request 0 1
+.include thermal.inc
+.tran 0 300 0 0.02 UIC
+.plot V(tj) V(tc) V(th)
+.end
