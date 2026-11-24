@@ -1,0 +1,16 @@
+* V6 MOSFET plant only - fixed duty test, no DLL
+.include plant_models_v6.inc
+.include interface_pwm_v6.inc
+.include test_01_NORMAL.inc
+Lboost vin nl 470u
+Rcoil nl sw 50m
+Dboost sw out DFAST
+Mboost md gmos 0 MOS200_DEMO
+Cout out 0 470u
+Rload out 0 48
+Rstep out loadsw 96
+Sload loadsw 0 step 0 SWMOD
+Vduty duty 0 PWL(0 0 5m 0 25m .5 100m .5)
+.tran 0 100m 0 10n UIC
+.plot V(out) V(gmos)
+.end
